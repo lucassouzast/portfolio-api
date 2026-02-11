@@ -4,9 +4,9 @@ const Project = require('../models/Project');
 
 const createProject = async (req, res) => {
     try {
-        const { title, description, image, githubLink, liveUrl, technologies } = req.body;
+        const { title, description, image, githubLink, liveUrl, technologies, type } = req.body;
         
-        if (!title || !description || !image || !liveUrl) {
+        if (!title || !description || !image || !liveUrl || !type) {
             return res.status(400).json({ message: 'Preencha todos os campos obrigatórios' });
         }
 
@@ -19,7 +19,8 @@ const createProject = async (req, res) => {
             image,
             githubLink,
             liveUrl,
-            technologies: techArray
+            technologies: techArray,
+            type
         });
 
         await newProject.save();
@@ -34,7 +35,7 @@ const createProject = async (req, res) => {
 const getProjects = async (req, res) => {
     try {
         const projects = await Project.find();
-        res.json(projects);
+        res.status(200).json(projects);
     } catch (error) {
         res.status(500).json({ message: 'Erro ao buscar projetos', error: error.message });
     }
