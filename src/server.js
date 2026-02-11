@@ -6,7 +6,6 @@ const cors = require('cors');
 dotenv.config();
 
 const app = express();
-const PORT = process.env.PORT || 5000;
 
 app.use(express.json());
 app.use(cors());
@@ -19,6 +18,8 @@ const pingRoute = require('./routes/ping');
 app.use('/ping', pingRoute);
 app.use('/auth', authRoutes);
 app.use('/projects', projectRoutes);
+
+const PORT = process.env.PORT || 5000;
 
 mongoose.connect(process.env.MONGO_URI)
     .then(() => {
