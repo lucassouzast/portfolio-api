@@ -12,11 +12,13 @@ app.use(express.json());
 app.use(cors());
 
 const projectRoutes = require('./routes/projectRoutes');
-app.use('/projects', projectRoutes);
+const authRoutes = require('./routes/authRoutes');
+const pingRoute = require('./routes/ping');
 
-app.get('/', (req, res) => {
-    res.json({'message': 'Hello World!'});
-});
+
+app.use('/ping', pingRoute);
+app.use('/auth', authRoutes);
+app.use('/projects', projectRoutes);
 
 mongoose.connect(process.env.MONGO_URI)
     .then(() => {
