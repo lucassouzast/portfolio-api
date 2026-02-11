@@ -22,7 +22,12 @@ const projectSchema = new mongoose.Schema({
     },
     technologies: {
         type: [String],
-    }, 
+    },
+    type: {
+        type: String,
+        enum: ["completed", "learning"], 
+        required: true
+    }
 }, { timestamps: true });
 
 const Project = mongoose.model("Project", projectSchema);
