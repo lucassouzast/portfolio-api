@@ -22,8 +22,8 @@ const projectSchema = new mongoose.Schema({
     },
     technologies: {
         type: [String],
-    }
-});
+    }, 
+}, { timestamps: true });
 
 const Project = mongoose.model("Project", projectSchema);
 
