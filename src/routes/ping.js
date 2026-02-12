@@ -1,13 +1,13 @@
 const express = require('express');
 const router = express.Router();
-const Project = require('../models/Project');
+const mongoose = require('mongoose');
 
 router.get('/', async (req, res) => {
   try {
-    await Project.findOne();
-    res.json({ message: 'Ping recebido, cluster acordado!' });
+    const isConnected = mongoose.connection.readyState === 1;
+    res.status(200).send('OK');
   } catch (err) {
-    res.status(500).json({ message: 'Erro no ping', error: err.message });
+    res.status(500).send('ERROR');
   }
 });
 
