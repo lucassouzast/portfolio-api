@@ -6,7 +6,7 @@ const createProject = async (req, res) => {
     try {
         const { title, description, image, githubLink, liveUrl, technologies, type } = req.body;
         
-        if (!title || !description || !image || !liveUrl || !type) {
+        if (!title || !description || !image || !type) {
             return res.status(400).json({ message: 'Preencha todos os campos obrigatórios' });
         }
 
@@ -18,7 +18,7 @@ const createProject = async (req, res) => {
             description,
             image,
             githubLink,
-            liveUrl,
+            liveUrl: liveUrl || undefined,
             technologies: techArray,
             type
         });
