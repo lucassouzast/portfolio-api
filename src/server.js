@@ -14,11 +14,13 @@ app.use(cors());
 const projectRoutes = require('./routes/projectRoutes');
 const authRoutes = require('./routes/authRoutes');
 const pingRoute = require('./routes/ping');
+const userRoutes = require('./routes/userRoutes');
 
 
 app.use('/ping', pingRoute);
 app.use('/auth', authRoutes);
 app.use('/projects', projectRoutes);
+app.use('/users', userRoutes);
 
 
 mongoose.connect(process.env.MONGO_URI)
