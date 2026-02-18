@@ -13,8 +13,8 @@ app.use(cors());
 
 const projectRoutes = require('./routes/projectRoutes');
 const authRoutes = require('./routes/authRoutes');
-const pingRoute = require('./routes/ping');
 const userRoutes = require('./routes/userRoutes');
+const pingRoute = require('./routes/ping');
 
 
 app.use('/ping', pingRoute);
