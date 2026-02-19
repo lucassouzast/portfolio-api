@@ -1,5 +1,15 @@
 const mongoose = require("mongoose");
 
+const projectImageSchema = new mongoose.Schema({
+    imageUrl: {
+        type: String,
+        required: true
+    },
+    imagePublicId: {
+        type: String
+    }
+}, { _id: false });
+
 const projectSchema = new mongoose.Schema({
     title: {
         type: String,
@@ -12,6 +22,13 @@ const projectSchema = new mongoose.Schema({
     image: {
         type: String,
         required: true
+    },
+    imagePublicId: {
+        type: String
+    },
+    images: {
+        type: [projectImageSchema],
+        default: []
     },
     githubLink: {
         type: String,
