@@ -23,9 +23,14 @@ app.use('/projects', projectRoutes);
 app.use('/users', userRoutes);
 
 
+app.listen(PORT, () => {
+    console.log(`Server is running on port ${PORT}`);
+});
+
 mongoose.connect(process.env.MONGO_URI)
     .then(() => {
-        console.log('Connected to MongoDB');
-        app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
+        console.log("MongoDB connected successfully");
     })
-    .catch(err => console.error('Could not connect to MongoDB', err));
+    .catch((err) => {
+        console.error("Error connecting to MongoDB:", err);
+    });
