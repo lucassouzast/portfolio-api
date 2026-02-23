@@ -11,12 +11,12 @@ const {
     appendProjectImages
 } = require('../controllers/projectController');
 const authMiddleware = require('../middlewares/authMiddleware');
-const { singleImageUpload, multipleImagesUpload } = require('../middlewares/uploadMiddleware');
+const { singleImageUploadAnyField, multipleImagesUpload } = require('../middlewares/uploadMiddleware');
 
 router.get('/', getProjects);
 router.get('/:id', getProjectById);
 
-router.post('/upload-image', authMiddleware, singleImageUpload('image'), uploadProjectImage);
+router.post('/upload-image', authMiddleware, singleImageUploadAnyField(), uploadProjectImage);
 router.post('/upload-images', authMiddleware, multipleImagesUpload('images', 10), uploadProjectImages);
 router.post('/:id/upload-images', authMiddleware, multipleImagesUpload('images', 10), appendProjectImages);
 router.post('/', authMiddleware, createProject);

@@ -16,7 +16,10 @@ const fileFilter = (req, file, cb) => {
 const uploader = multer({
     storage,
     fileFilter,
-    limits: { fileSize: MAX_FILE_SIZE }
+    limits: {
+        fileSize: MAX_FILE_SIZE,
+        files: MAX_FILES
+    }
 });
 
 const handleUploadError = (err, res) => {
@@ -47,6 +50,49 @@ const singleImageUpload = (fieldName = 'image') => {
     };
 };
 
+const singleImageUploadAliases = (fieldNames = ['image', 'file']) => {
+    const normalizedFieldNames = Array.isArray(fieldNames)
+        ? fieldNames.filter((fieldName) => typeof fieldName === 'string' && fieldName.trim() !== '')
+        : [];
+
+    const fieldsConfig = (normalizedFieldNames.length > 0 ? normalizedFieldNames : ['image'])
+        .map((fieldName) => ({ name: fieldName, maxCount: 1 }));
+
+    return (req, res, next) => {
+        uploader.fields(fieldsConfig)(req, res, (err) => {
+            if (err) {
+                return handleUploadError(err, res);
+            }
+
+            const filesByField = req.files || {};
+
+            for (const { name } of fieldsConfig) {
+                if (Array.isArray(filesByField[name]) && filesByField[name][0]) {
+                    req.file = filesByField[name][0];
+                    break;
+                }
+            }
+
+            return next();
+        });
+    };
+};
+
+const singleImageUploadAnyField = () => {
+    return (req, res, next) => {
+        uploader.any()(req, res, (err) => {
+            if (err) {
+                return handleUploadError(err, res);
+            }
+
+            const files = Array.isArray(req.files) ? req.files : [];
+            req.file = files[0];
+
+            return next();
+        });
+    };
+};
+
 const multipleImagesUpload = (fieldName = 'images', maxCount = MAX_FILES) => {
     return (req, res, next) => {
         uploader.array(fieldName, maxCount)(req, res, (err) => {
@@ -61,6 +107,8 @@ const multipleImagesUpload = (fieldName = 'images', maxCount = MAX_FILES) => {
 
 module.exports = {
     singleImageUpload,
+    singleImageUploadAliases,
+    singleImageUploadAnyField,
     multipleImagesUpload,
     MAX_FILE_SIZE,
     MAX_FILES

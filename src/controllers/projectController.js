@@ -201,7 +201,9 @@ const updateProject = async (req, res) => {
 const uploadProjectImage = async (req, res) => {
     try {
         if (!req.file || !req.file.buffer) {
-            return res.status(400).json({ message: 'Nenhuma imagem enviada' });
+            return res.status(400).json({
+                message: 'Nenhuma imagem enviada. Envie multipart/form-data com um arquivo de imagem.'
+            });
         }
 
         const { imageUrl, publicId } = await uploadImage(req.file.buffer);
